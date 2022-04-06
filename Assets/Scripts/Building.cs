@@ -8,6 +8,17 @@ public abstract class Building : MonoBehaviour
     [SerializeField]protected float RadiusToSpawn;
     private int _countOfCreatedProducts = 0;
     [SerializeField] private GameObject _product;
+    [SerializeField] private bool canSpawnProduct = true;
+
+    public void Start()
+    {
+        InvokeSpawnProducts();
+    }
+
+    public void InvokeSpawnProducts()
+    {
+        StartCoroutine(SpawnProducts());
+    }
 
     public void SpawnProduct()
     {
@@ -35,5 +46,16 @@ public abstract class Building : MonoBehaviour
         _countOfCreatedProducts++;
         //Debug.Log("Продукт произведен! Номер продукта: " + _countOfCreatedProducts);
     }
+
+    private IEnumerator SpawnProducts()
+    {
+        while (canSpawnProduct)
+        {
+            SpawnProduct();
+            yield return new WaitForSeconds(TimeToSpawn);
+        }
+        
+    }
+
     public abstract void SpeakToWorld();
 }
